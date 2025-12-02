@@ -9,4 +9,5 @@ Route::get('/', function () {
 });
 
 Route::post('/api/login', [LoginController::class, 'login']);
+//Menu Route by Omar
 Route::get('/api/menu', [MenuController::class, 'menu']);
