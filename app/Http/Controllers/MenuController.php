@@ -48,7 +48,7 @@ class MenuController extends Controller
 
     return response()->json(['message' => 'Food created','food' => $food]);
 }
-    public function update(Request $request, $id){
+    public function updateCategory(Request $request, $id){
     $category = Category::find($id);
 
     if (!$category) {
@@ -62,7 +62,7 @@ class MenuController extends Controller
     return response()->json(['message' => 'Category updated successfully','category' => $category]);
 }
 
-    public function update(Request $request, $id)
+    public function updateFood(Request $request, $id)
 {
     $food = Food::find($id);
 
@@ -80,6 +80,31 @@ class MenuController extends Controller
         'message' => 'Food updated successfully',
         'food' => $food
     ]);
+}
+
+    public function deleteCategory($id){
+        $category = Category::find($id);
+
+        if (!$category) {
+            return response()->json(['message' => 'Category not found'], 404);
+        }
+
+        $category->delete();
+
+        return response()->json(['message' => 'Category deleted successfully']);
+}
+
+
+    public function deleteFood($id){
+        $food = Food::find($id);
+
+        if (!$food) {
+            return response()->json(['message' => 'Food not found'], 404);
+        }
+
+        $food->delete();
+
+        return response()->json(['message' => 'Food deleted successfully']);
 }
 
 
