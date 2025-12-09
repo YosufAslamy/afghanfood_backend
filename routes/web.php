@@ -18,3 +18,4 @@ Route::put('/api/food/{id}', [MenuController::class, 'updateFood']);
 Route::delete('/api/categorie/{id}', [MenuController::class, 'deleteCategory']);
 Route::delete('/api/food/{id}', [MenuController::class, 'deleteFood']);
 Route::post('/api/message', [ContactController::class, 'submitMessage']);
+Route::get('/api/messages', [ContactController::class, 'getMessages']);

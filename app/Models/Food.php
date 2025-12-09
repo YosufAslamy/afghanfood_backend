@@ -17,6 +17,7 @@ class Food extends Model
         'price',
         'photo_url',
         'is_vegetarian',
+        'is_active'
     ];
 
     public function category()
