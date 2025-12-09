@@ -13,6 +13,7 @@ return new class extends Migration
 {
     Schema::table('foods', function (Blueprint $table) {
         $table->boolean('is_active')->default(true); 
+});
 }
 
 public function down()
