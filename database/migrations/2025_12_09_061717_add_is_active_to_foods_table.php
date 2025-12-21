@@ -9,18 +9,18 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
-{
-    Schema::table('foods', function (Blueprint $table) {
-        $table->boolean('is_active')->default(true); 
-});
-}
-
-public function down()
-{
-    Schema::table('foods', function (Blueprint $table) {
-        $table->dropColumn('is_active');
+        public function up()
+    {
+        Schema::table('foods', function (Blueprint $table) {
+            $table->boolean('is_active')->default(true); 
     });
-}
+    }
+
+    public function down()
+    {
+        Schema::table('foods', function (Blueprint $table) {
+            $table->dropColumn('is_active');
+        });
+    }
 
 };
