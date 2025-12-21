@@ -25,4 +25,14 @@ class ContactController extends Controller
             'data' => $contactMessage
         ], 201);
     }
+    public function getMessages()
+{
+    $messages = ContactMessage::all();
+
+    return response()->json([
+        'message' => 'Messages retrieved successfully',
+        'data' => $messages
+    ], 200);
+}
+
 }

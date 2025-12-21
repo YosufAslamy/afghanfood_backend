@@ -3,6 +3,7 @@
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -18,3 +19,6 @@ Route::put('/api/food/{id}', [MenuController::class, 'updateFood']);
 Route::delete('/api/categorie/{id}', [MenuController::class, 'deleteCategory']);
 Route::delete('/api/food/{id}', [MenuController::class, 'deleteFood']);
 Route::post('/api/message', [ContactController::class, 'submitMessage']);
+Route::get('/api/messages', [ContactController::class, 'getMessages']);
+Route::post('/api/order', [OrderController::class, 'createOrder']);
+Route::get('/api/order/{id}', [OrderController::class, 'getOrder']);

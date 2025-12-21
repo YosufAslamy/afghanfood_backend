@@ -36,6 +36,7 @@ class MenuController extends Controller
         'description' => 'nullable|string',
         'price' => 'required|numeric',
         'is_vegetarian' => 'boolean',
+        'is_active' => 'boolean',
     ]);
 
     $food = new Food;
@@ -44,6 +45,7 @@ class MenuController extends Controller
     $food->description = $request->description;
     $food->price = $request->price;
     $food->is_vegetarian = $request->is_vegetarian;
+    $food->is_active = $request->is_active ?? true; 
     $food->save();   
 
     return response()->json(['message' => 'Food created','food' => $food]);
@@ -74,6 +76,7 @@ class MenuController extends Controller
     $food->price = $request->price;
     $food->description = $request->description;
     $food->category_id = $request->category_id;
+    $food->is_active = $request->is_active ?? true; 
     $food->save();
 
     return response()->json([

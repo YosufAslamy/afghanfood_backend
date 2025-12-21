@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('photo_url', 255)->nullable();
 
             $table->boolean('is_vegetarian')->default(false);
-
             $table->timestamps();
         });
     }
