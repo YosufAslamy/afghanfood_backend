@@ -7,9 +7,11 @@ use App\Models\Food;
 use Illuminate\Http\Request;
 
 class MenuController extends Controller
+
 {
+
     public function menu(){
-        
+
         $categories = Category::with('foods')->get();
 
         return response()->json($categories, 200);
@@ -24,7 +26,7 @@ class MenuController extends Controller
         $category = new Category;
         $category->name = $request->name;
         $category->description = $request->description;
-        $category->save();   
+        $category->save();
 
         return response()->json(['message' => 'Category created','category' => $category]);
 }
@@ -45,8 +47,8 @@ class MenuController extends Controller
     $food->description = $request->description;
     $food->price = $request->price;
     $food->is_vegetarian = $request->is_vegetarian;
-    $food->is_active = $request->is_active ?? true; 
-    $food->save();   
+    $food->is_active = $request->is_active ?? true;
+    $food->save();
 
     return response()->json(['message' => 'Food created','food' => $food]);
 }
@@ -76,7 +78,7 @@ class MenuController extends Controller
     $food->price = $request->price;
     $food->description = $request->description;
     $food->category_id = $request->category_id;
-    $food->is_active = $request->is_active ?? true; 
+    $food->is_active = $request->is_active ?? true;
     $food->save();
 
     return response()->json([
