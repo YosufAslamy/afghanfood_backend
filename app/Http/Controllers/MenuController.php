@@ -4,17 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Food;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class MenuController extends Controller
 {
-    public function menu(){
-        
-        $categories = Category::with('foods')->get();
+   public function menu(){
+    $categories = Category::with(['foods' => function($query) {
+        $query->where('is_active', true);
+    }])->get();
 
-        return response()->json($categories, 200);
+
+    foreach ($categories as $category) {
+        foreach ($category->foods as $food) {
+            if ($food->photo_url) {
+                $food->photo_url = asset('storage/foods/' . $food->photo_url);
+            }
+        }
     }
 
+    return response()->json($categories, 200);
+}
+   
     public function addCategory(Request $request){
         $request->validate([
             'name' => 'required|string|max:150',
@@ -47,7 +59,9 @@ class MenuController extends Controller
     $food->is_vegetarian = $request->is_vegetarian;
     $food->is_active = $request->is_active ?? true; 
     $food->save();   
-
+        if ($request->hasFile('photo')) {
+            $this->uploadPhoto($food, $request->file('photo'));
+    }
     return response()->json(['message' => 'Food created','food' => $food]);
 }
     public function updateCategory(Request $request, $id){
@@ -77,8 +91,16 @@ class MenuController extends Controller
     $food->description = $request->description;
     $food->category_id = $request->category_id;
     $food->is_active = $request->is_active ?? true; 
-    $food->save();
 
+     if ($request->hasFile('photo')) {
+        if ($food->photo_url && Storage::disk('public')->exists('foods/' . $food->photo_url)) {
+            Storage::disk('public')->delete('foods/' . $food->photo_url);
+        }
+        
+        $this->uploadPhoto($food, $request->file('photo'));
+    }
+
+    $food->save();
     return response()->json([
         'message' => 'Food updated successfully',
         'food' => $food
@@ -105,11 +127,29 @@ class MenuController extends Controller
             return response()->json(['message' => 'Food not found'], 404);
         }
 
+        if ($food->photo_url && Storage::disk('public')->exists('foods/' . $food->photo_url)) {
+        Storage::disk('public')->delete('foods/' . $food->photo_url);
+    }
+
         $food->delete();
 
         return response()->json(['message' => 'Food deleted successfully']);
 }
 
+
+private function uploadPhoto(Food $food, $photoFile)
+{
+    $filename = 'food_' . Str::slug($food->name) . '_' . $food->id . '_' . time() . '.' . 
+                $photoFile->getClientOriginalExtension();
+    
+    $photoFile->storeAs('foods', $filename, 'public');
+    
+
+    $food->photo_url = $filename;
+    $food->save();
+
+    return $filename;
+}
 
 }
 
